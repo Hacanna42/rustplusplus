@@ -211,6 +211,49 @@ module.exports = {
             commandLowerCase === `${prefix}${client.intlGet(guildId, 'commandSyntaxTravelingVendor')}`) {
             rustplus.sendInGameMessage(rustplus.getCommandTravelingVendor());
         }
+        else if (commandLowerCase === `${prefix}${client.intlGet('en', 'commandSyntaxDeepsea')}` ||
+            commandLowerCase === `${prefix}${client.intlGet(guildId, 'commandSyntaxDeepsea')}`) {
+            rustplus.sendInGameMessage(rustplus.getCommandDeepsea());
+        }
+        else if (commandLowerCase.startsWith(`${prefix}${client.intlGet('en', 'commandSyntaxCalibrateDeepsea')} `) ||
+            commandLowerCase.startsWith(`${prefix}${client.intlGet(guildId, 'commandSyntaxCalibrateDeepsea')} `)) {
+            let timeStr = null;
+            if (commandLowerCase.startsWith(`${prefix}${client.intlGet('en', 'commandSyntaxCalibrateDeepsea')} `)) {
+                timeStr = commandLowerCase.slice(`${prefix}${client.intlGet('en', 'commandSyntaxCalibrateDeepsea')} `.length).trim();
+            } else {
+                timeStr = commandLowerCase.slice(`${prefix}${client.intlGet(guildId, 'commandSyntaxCalibrateDeepsea')} `.length).trim();
+            }
+            const success = rustplus.calibrateDeepsea(timeStr);
+            if (success) {
+                rustplus.sendInGameMessage(client.intlGet(guildId, 'deepseaCalibrated'));
+            } else {
+                rustplus.sendInGameMessage(client.intlGet(guildId, 'deepseaCalibrateError'));
+            }
+        }
+        else if (commandLowerCase.startsWith(`${prefix}deepsea.`)) {
+            const parts = commandLowerCase.substring(prefix.length).split(' ');
+            if (parts.length >= 2) {
+                const configCommand = parts[0].toLowerCase();
+                const valueStr = parts[1];
+                let configKey = null;
+                
+                if (configCommand === 'deepsea.wipecooldown') configKey = 'deepseaWipecooldown';
+                else if (configCommand === 'deepsea.wipeduration') configKey = 'deepseaWipeduration';
+                else if (configCommand === 'deepsea.wipeendphaseduration') configKey = 'deepseaWipeendphaseduration';
+                else if (configCommand === 'deepsea.wiperadiationphaseduration') configKey = 'deepseaWiperadiationphaseduration';
+
+                if (configKey) {
+                    const result = rustplus.setDeepseaConfig(configKey, valueStr);
+                    if (result !== false) {
+                        rustplus.sendInGameMessage(`Deep Sea config ${configCommand} updated to ${result} seconds.`);
+                    } else {
+                        rustplus.sendInGameMessage(`Invalid value for ${configCommand}. Use a number (seconds) or 'default'.`);
+                    }
+                }
+            } else {
+                rustplus.sendInGameMessage(`Usage: !deepsea.<config> <seconds|default>`);
+            }
+        }
         else {
             /* Maybe a custom command? */
 

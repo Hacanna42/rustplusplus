@@ -62,6 +62,9 @@ class RustPlus extends RustPlusLib {
         this.pollingTaskId = 0;             /* The id of the main polling mechanism of the rustplus instance. */
         this.tokensReplenishTaskId = 0;     /* The id of the replenish task for rustplus tokens. */
 
+        /* Deep Sea */
+        this.deepseaBaseCloseTime = null;
+
         /* Other variable initializations */
         this.tokens = 24;                           /* The amount of tokens that is available at start. */
         this.timers = new Object();                 /* Stores all custom timers that are created. */
@@ -826,6 +829,96 @@ class RustPlus extends RustPlusLib {
         }
 
         return strings;
+    }
+
+    calibrateDeepsea(timeStr) {
+        let seconds = 0;
+        const parts = timeStr.split(':').map(p => parseInt(p, 10));
+        if (parts.length === 3) {
+            seconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+        } else if (parts.length === 2) {
+            seconds = parts[0] * 60 + parts[1];
+        } else if (parts.length === 1) {
+            seconds = parts[0];
+        } else {
+            return false;
+        }
+
+        if (isNaN(seconds)) return false;
+
+        this.deepseaBaseCloseTime = new Date().getTime() + (seconds * 1000);
+        return true;
+    }
+
+    getCommandDeepsea(isInfoChannel = false) {
+        if (!this.deepseaBaseCloseTime) {
+            return Client.client.intlGet(this.guildId, 'deepseaNotCalibrated');
+        }
+
+        const instance = Client.client.getInstance(this.guildId);
+        const serverSettings = instance.serverList[this.serverId] || {};
+        
+        const wipeCooldown = serverSettings.deepseaWipecooldown !== undefined ? serverSettings.deepseaWipecooldown : Constants.DEEPSEA_WIPECOOLDOWN;
+        const wipeDuration = serverSettings.deepseaWipeduration !== undefined ? serverSettings.deepseaWipeduration : Constants.DEEPSEA_WIPEDURATION;
+        const wipeEndDuration = serverSettings.deepseaWipeendphaseduration !== undefined ? serverSettings.deepseaWipeendphaseduration : Constants.DEEPSEA_WIPEENDPHASEDURATION;
+        const wipeRadDuration = serverSettings.deepseaWiperadiationphaseduration !== undefined ? serverSettings.deepseaWiperadiationphaseduration : Constants.DEEPSEA_WIPERADIATIONPHASEDURATION;
+
+        const CYCLE_DURATION = (wipeDuration + wipeCooldown);
+        const now = new Date().getTime();
+        let diffSecs = (this.deepseaBaseCloseTime - now) / 1000;
+        
+        let nextCloseSecs = diffSecs % CYCLE_DURATION;
+        if (nextCloseSecs < 0) {
+            nextCloseSecs += CYCLE_DURATION;
+        }
+
+        const strings = [];
+
+        if (nextCloseSecs > wipeDuration) {
+            const timeToOpen = nextCloseSecs - wipeDuration;
+            if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoClosed', { time: Timer.secondsToFullScale(timeToOpen) });
+            strings.push(Client.client.intlGet(this.guildId, 'deepseaClosed', { time: Timer.secondsToFullScale(timeToOpen) }));
+        } else {
+            const timeToClose = nextCloseSecs;
+            
+            if (timeToClose <= wipeRadDuration) {
+                if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoRadiation', { time: Timer.secondsToFullScale(timeToClose) });
+                strings.push(Client.client.intlGet(this.guildId, 'deepseaRadiation', { time: Timer.secondsToFullScale(timeToClose) }));
+            } else if (timeToClose <= wipeEndDuration) {
+                const timeToRad = timeToClose - wipeRadDuration;
+                if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoWeather', { time: Timer.secondsToFullScale(timeToClose), radTime: Timer.secondsToFullScale(timeToRad) });
+                strings.push(Client.client.intlGet(this.guildId, 'deepseaWeather', { time: Timer.secondsToFullScale(timeToClose), radTime: Timer.secondsToFullScale(timeToRad) }));
+            } else {
+                const timeToWeather = timeToClose - wipeEndDuration;
+                if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoOpen', { time: Timer.secondsToFullScale(timeToClose), weatherTime: Timer.secondsToFullScale(timeToWeather) });
+                strings.push(Client.client.intlGet(this.guildId, 'deepseaOpen', { time: Timer.secondsToFullScale(timeToClose), weatherTime: Timer.secondsToFullScale(timeToWeather) }));
+            }
+        }
+        
+        return strings;
+    }
+
+    setDeepseaConfig(configKey, valueStr) {
+        const instance = Client.client.getInstance(this.guildId);
+        if (!instance.serverList[this.serverId]) return false;
+        
+        let val;
+        if (valueStr.toLowerCase() === 'default') {
+            switch(configKey) {
+                case 'deepseaWipecooldown': val = Constants.DEEPSEA_WIPECOOLDOWN; break;
+                case 'deepseaWipeduration': val = Constants.DEEPSEA_WIPEDURATION; break;
+                case 'deepseaWipeendphaseduration': val = Constants.DEEPSEA_WIPEENDPHASEDURATION; break;
+                case 'deepseaWiperadiationphaseduration': val = Constants.DEEPSEA_WIPERADIATIONPHASEDURATION; break;
+                default: return false;
+            }
+        } else {
+            val = parseInt(valueStr, 10);
+            if (isNaN(val) || val < 0) return false;
+        }
+
+        instance.serverList[this.serverId][configKey] = val;
+        Client.client.setInstance(this.guildId, instance);
+        return val;
     }
 
     getCommandConnection(command) {

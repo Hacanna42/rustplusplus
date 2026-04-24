@@ -203,6 +203,10 @@ module.exports = (client, guild) => {
     /* Check every serverList for missing keys */
     for (const [serverId, content] of Object.entries(instance.serverList)) {
         if (!content.hasOwnProperty('customCameraGroups')) content.customCameraGroups = {};
+        if (!content.hasOwnProperty('deepseaWipecooldown')) content.deepseaWipecooldown = 5400;
+        if (!content.hasOwnProperty('deepseaWipeduration')) content.deepseaWipeduration = 10800;
+        if (!content.hasOwnProperty('deepseaWipeendphaseduration')) content.deepseaWipeendphaseduration = 1800;
+        if (!content.hasOwnProperty('deepseaWiperadiationphaseduration')) content.deepseaWiperadiationphaseduration = 300;
     }
 
     client.setInstance(guild.id, instance);
