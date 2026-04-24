@@ -16,6 +16,7 @@ Slash Command | Description
 [**/craft**](commands.md#craft) | Display the cost to craft an item.
 [**/credentials**](commands.md#credentials) | Set/Clear the Credentials for the user account.
 [**/decay**](commands.md#decay) | Display the decay time of an item.
+[**/deepsea**](commands.md#deepsea) | Deep Sea Timers and Status.
 [**/help**](commands.md#help) | Display help message.
 [**/item**](commands.md#item) | Get the details of an item.
 [**/leader**](commands.md#leader) | Give or take the leadership from/to a team member.
@@ -136,6 +137,17 @@ Subcommand | Options | Description | Required
 &nbsp; | `hp` | THe current HP of the item. | `False`
 
 ![Discord Slash Command decay Image](images/slash_commands/decay.png)
+
+
+## **/deepsea**
+
+> **Deep Sea Timers and Status.**
+
+Subcommand | Options | Description | Required
+---------- | ------- | ----------- | --------
+`status` | &nbsp; | Get the current Deep Sea status. | &nbsp;
+`calibrate`| &nbsp; | Calibrate the Deep Sea timer. | &nbsp;
+&nbsp; | `time` | Time until Deep Sea closes (hh:mm:ss, mm:ss, ss). | `True`
 
 
 ## **/help**
@@ -353,6 +365,7 @@ In-Game Command | Description
 [**craft**](commands.md#craft-ingame) | Display the cost to craft an item.
 [**death/deaths**](commands.md#deathdeaths) | Get recent death events.
 [**decay**](commands.md#decay-ingame) | Display the decay time of an item.
+[**deepsea**](commands.md#deepsea-ingame) | Get the current Deep Sea status and manage configs.
 [**events**](commands.md#events) | Get recent events.
 [**heli**](commands.md#heli) | Get information about Patrol Helicopter (Location, time since last downed, time since last on map).
 [**large**](commands.md#large) | Get information about Large Oil Rig (Time till crate unlocks, time since last trigger).
@@ -455,6 +468,22 @@ In-Game Command | Description
 <br>Command: `!decay armored wall 450`
 
 ![In-Game Command decay Image](images/ingame_commands/decay_ingame.png)
+
+
+## **deepsea ingame**
+
+> **Get the current Deep Sea status and manage configs.**
+<br>Command: `!deepsea`
+<br>Command: `!calibrate deepsea 35:00`
+<br>Command: `!deepsea.wipecooldown 5400`
+<br>Command: `!deepsea.wipeduration 10800`
+<br>Command: `!deepsea.wipeendphaseduration 1800`
+<br>Command: `!deepsea.wiperadiationphaseduration 300`
+
+Subcommand | Description | Required
+---------- | ----------- | --------
+`calibrate` | Calibrate the Deep Sea timer (`!calibrate deepsea <time>`). | `False`
+`deepsea.<config>` | Modify server-specific Deep Sea configs (`!deepsea.<config> <seconds|default>`). | `False`
 
 
 ## **events**
