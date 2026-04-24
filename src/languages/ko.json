@@ -796,12 +796,12 @@
     "deepseaNotCalibrated": "심해 타이머가 아직 보정되지 않았습니다. '!calibrate deepsea [current deepsea time hh:mm]' 형식으로 보정하세요.",
     "deepseaCalibrated": "심해 타이머가 성공적으로 보정되었습니다.",
     "deepseaCalibrateError": "심해 타이머 보정에 실패했습니다. 시간 형식이 올바른지 확인하세요. 형식: hh:mm, mm",
-    "deepseaOpen": "심해가 열려 있습니다! {time} 후 닫힙니다. 악천후까지 {weatherTime} 남았습니다.",
-    "deepseaWeather": "심해가 열려 있습니다! 악천후가 활성화되었습니다! {time} 후 닫힙니다. 방사능까지 {radTime} 남았습니다.",
-    "deepseaRadiation": "심해가 열려 있습니다! 방사능이 활성화되었습니다! {time} 후 닫힙니다.",
-    "deepseaClosed": "심해가 닫혀 있습니다! {time} 후 열립니다.",
-    "deepseaInfoOpen": "열림, 닫힘까지: {time} (악천후: {weatherTime})",
-    "deepseaInfoWeather": "악천후, 닫힘까지: {time} (방사능: {radTime})",
-    "deepseaInfoRadiation": "방사능, 닫힘까지: {time}",
-    "deepseaInfoClosed": "닫힘, 열림까지: {time}"
+    "deepseaOpen": "심해가 열려 있습니다! {time}분 후 닫힙니다. 악천후까지 {weatherTime}분 남았습니다.",
+    "deepseaWeather": "심해가 열려 있습니다! 악천후가 활성화되었습니다! {time}분 후 닫힙니다. 방사능까지 {radTime}분 남았습니다.",
+    "deepseaRadiation": "심해가 열려 있습니다! 방사능이 활성화되었습니다! {time}분 후 닫힙니다.",
+    "deepseaClosed": "심해가 닫혀 있습니다! {time}분 후 열립니다.",
+    "deepseaInfoOpen": "열림, 닫힘까지: {time}분 (악천후: {weatherTime}분)",
+    "deepseaInfoWeather": "악천후, 닫힘까지: {time}분 (방사능: {radTime}분)",
+    "deepseaInfoRadiation": "방사능, 닫힘까지: {time}분",
+    "deepseaInfoClosed": "닫힘, 열림까지: {time}분"
 }

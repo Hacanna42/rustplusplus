@@ -206,9 +206,9 @@ module.exports = {
         const minutes = Math.floor((totSeconds % 3600) / 60);
 
         if (hours > 0) {
-            return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+            return `${hours}h ${minutes}m`;
         } else {
-            return `${minutes}`;
+            return `${minutes} minutes`;
         }
     },
 
