@@ -786,5 +786,22 @@
     "wipeDetected": "Rilevato wipe!",
     "yield": "Yield",
     "youAreAlreadyLeader": "Sei già il leader.",
-    "youAreNotPairedWithServer": "Il comando del leader non funziona perché non sei associato al server."
+    "youAreNotPairedWithServer": "Il comando del leader non funziona perché non sei associato al server.",
+    "commandSyntaxDeepsea": "deepsea",
+    "commandSyntaxCalibrateDeepsea": "calibrate deepsea",
+    "commandsDeepseaDesc": "Deep Sea Timers and Status.",
+    "commandsDeepseaStatusDesc": "Get the current Deep Sea status.",
+    "commandsDeepseaCalibrateDesc": "Calibrate the Deep Sea timer.",
+    "commandsDeepseaCalibrateTimeDesc": "Time until Deep Sea closes (hh:mm:ss, mm:ss, ss)",
+    "deepseaNotCalibrated": "Deep Sea timer is not calibrated yet. Use '!calibrate deepsea time' to calibrate.",
+    "deepseaCalibrated": "Deep Sea timer successfully calibrated.",
+    "deepseaCalibrateError": "Failed to calibrate Deep Sea timer. Ensure correct time format (hh:mm:ss, mm:ss, ss).",
+    "deepseaOpen": "Deep Sea is OPEN! Closes in {time}. (Severe weather in {weatherTime})",
+    "deepseaWeather": "Deep Sea is OPEN! Severe weather is active! Closes in {time}. (Radiation in {radTime})",
+    "deepseaRadiation": "Deep Sea is OPEN! Radiation is active! Closes in {time}.",
+    "deepseaClosed": "Deep Sea is CLOSED! Opens in {time}.",
+    "deepseaInfoOpen": "Open, Closes: {time} (Weather: {weatherTime})",
+    "deepseaInfoWeather": "Severe Weather, Closes: {time} (Rad: {radTime})",
+    "deepseaInfoRadiation": "Radiation, Closes: {time}",
+    "deepseaInfoClosed": "Closed, Opens: {time}"
 }
