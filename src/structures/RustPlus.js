@@ -143,6 +143,7 @@ class RustPlus extends RustPlusLib {
         /* Setup settings */
         this.generalSettings = instance.generalSettings;
         this.notificationSettings = instance.notificationSettings;
+        this.deepseaBaseCloseTime = instance.serverList[this.serverId].deepseaBaseCloseTime || null;
 
         this.connect();
     }
@@ -834,12 +835,10 @@ class RustPlus extends RustPlusLib {
     calibrateDeepsea(timeStr) {
         let seconds = 0;
         const parts = timeStr.split(':').map(p => parseInt(p, 10));
-        if (parts.length === 3) {
-            seconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
-        } else if (parts.length === 2) {
-            seconds = parts[0] * 60 + parts[1];
+        if (parts.length === 2) {
+            seconds = parts[0] * 3600 + parts[1] * 60;
         } else if (parts.length === 1) {
-            seconds = parts[0];
+            seconds = parts[0] * 60;
         } else {
             return false;
         }
@@ -847,6 +846,13 @@ class RustPlus extends RustPlusLib {
         if (isNaN(seconds)) return false;
 
         this.deepseaBaseCloseTime = new Date().getTime() + (seconds * 1000);
+
+        const instance = Client.client.getInstance(this.guildId);
+        if (instance.serverList[this.serverId]) {
+            instance.serverList[this.serverId].deepseaBaseCloseTime = this.deepseaBaseCloseTime;
+            Client.client.setInstance(this.guildId, instance);
+        }
+
         return true;
     }
 
@@ -876,22 +882,22 @@ class RustPlus extends RustPlusLib {
 
         if (nextCloseSecs > wipeDuration) {
             const timeToOpen = nextCloseSecs - wipeDuration;
-            if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoClosed', { time: Timer.secondsToFullScale(timeToOpen) });
-            strings.push(Client.client.intlGet(this.guildId, 'deepseaClosed', { time: Timer.secondsToFullScale(timeToOpen) }));
+            if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoClosed', { time: Timer.secondsToHHMM(timeToOpen) });
+            strings.push(Client.client.intlGet(this.guildId, 'deepseaClosed', { time: Timer.secondsToHHMM(timeToOpen) }));
         } else {
             const timeToClose = nextCloseSecs;
             
             if (timeToClose <= wipeRadDuration) {
-                if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoRadiation', { time: Timer.secondsToFullScale(timeToClose) });
-                strings.push(Client.client.intlGet(this.guildId, 'deepseaRadiation', { time: Timer.secondsToFullScale(timeToClose) }));
+                if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoRadiation', { time: Timer.secondsToHHMM(timeToClose) });
+                strings.push(Client.client.intlGet(this.guildId, 'deepseaRadiation', { time: Timer.secondsToHHMM(timeToClose) }));
             } else if (timeToClose <= wipeEndDuration) {
                 const timeToRad = timeToClose - wipeRadDuration;
-                if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoWeather', { time: Timer.secondsToFullScale(timeToClose), radTime: Timer.secondsToFullScale(timeToRad) });
-                strings.push(Client.client.intlGet(this.guildId, 'deepseaWeather', { time: Timer.secondsToFullScale(timeToClose), radTime: Timer.secondsToFullScale(timeToRad) }));
+                if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoWeather', { time: Timer.secondsToHHMM(timeToClose), radTime: Timer.secondsToHHMM(timeToRad) });
+                strings.push(Client.client.intlGet(this.guildId, 'deepseaWeather', { time: Timer.secondsToHHMM(timeToClose), radTime: Timer.secondsToHHMM(timeToRad) }));
             } else {
                 const timeToWeather = timeToClose - wipeEndDuration;
-                if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoOpen', { time: Timer.secondsToFullScale(timeToClose), weatherTime: Timer.secondsToFullScale(timeToWeather) });
-                strings.push(Client.client.intlGet(this.guildId, 'deepseaOpen', { time: Timer.secondsToFullScale(timeToClose), weatherTime: Timer.secondsToFullScale(timeToWeather) }));
+                if (isInfoChannel) return Client.client.intlGet(this.guildId, 'deepseaInfoOpen', { time: Timer.secondsToHHMM(timeToClose), weatherTime: Timer.secondsToHHMM(timeToWeather) });
+                strings.push(Client.client.intlGet(this.guildId, 'deepseaOpen', { time: Timer.secondsToHHMM(timeToClose), weatherTime: Timer.secondsToHHMM(timeToWeather) }));
             }
         }
         

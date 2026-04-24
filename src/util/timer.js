@@ -200,6 +200,18 @@ module.exports = {
         return totSeconds;
     },
 
+    secondsToHHMM: function (totSeconds) {
+        totSeconds = Math.max(0, Math.floor(totSeconds));
+        const hours = Math.floor(totSeconds / 3600);
+        const minutes = Math.floor((totSeconds % 3600) / 60);
+
+        if (hours > 0) {
+            return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+        } else {
+            return `${minutes}`;
+        }
+    },
+
     sleep: function (ms) {
         return new Promise((resolve) => {
             setTimeout(resolve, ms);

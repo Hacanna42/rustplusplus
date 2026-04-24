@@ -147,7 +147,7 @@ Subcommand | Options | Description | Required
 ---------- | ------- | ----------- | --------
 `status` | &nbsp; | Get the current Deep Sea status. | &nbsp;
 `calibrate`| &nbsp; | Calibrate the Deep Sea timer. | &nbsp;
-&nbsp; | `time` | Time until Deep Sea closes (hh:mm:ss, mm:ss, ss). | `True`
+&nbsp; | `time` | Time until Deep Sea closes (hh:mm, mm). | `True`
 
 
 ## **/help**
