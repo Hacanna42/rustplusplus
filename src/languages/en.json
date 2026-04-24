@@ -349,7 +349,7 @@
     "deviceIsAlreadyOnOff": "{device} is already {status}.",
     "deviceIsCurrentlyOnOff": "{device} is currently {status}.",
     "deviceWasTurnedOnOff": "{device} was turned {status}.",
-    "deepseaNotCalibrated": "Deep Sea timer is not calibrated yet. Use '!calibrate deepsea time' to calibrate.",
+    "deepseaNotCalibrated": "Deep Sea timer is not calibrated yet. Use '!calibrate deepsea [current deepsea time hh:mm:ss]' to calibrate.",
     "deepseaCalibrated": "Deep Sea timer successfully calibrated.",
     "deepseaCalibrateError": "Failed to calibrate Deep Sea timer. Ensure correct time format (hh:mm:ss, mm:ss, ss).",
     "deepseaOpen": "Deep Sea is OPEN! Closes in {time}. (Severe weather in {weatherTime})",
